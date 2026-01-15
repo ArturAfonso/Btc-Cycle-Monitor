@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Ícone com Badge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            margin: 20px 0;
+            background: white;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        #fileInput {
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+        }
+        .preview {
+            display: inline-block;
+            margin: 10px;
+        }
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔴 Criar Ícone com Badge de Notificação</h1>
+        
+        <div class="instructions">
+            <strong>Instruções:</strong>
+            <ol>
+                <li>Carregue o arquivo <code>favicon.ico</code> ou qualquer PNG do seu projeto</li>
+                <li>O script adicionará automaticamente um círculo vermelho no canto superior direito</li>
+                <li>Baixe a imagem gerada</li>
+                <li>Salve como <code>favicon-badge.ico</code> na pasta <code>assets/icons/</code></li>
+            </ol>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*">
+        
+        <div class="preview">
+            <h3>Original:</h3>
+            <canvas id="originalCanvas" width="128" height="128"></canvas>
+        </div>
+        
+        <div class="preview">
+            <h3>Com Badge:</h3>
+            <canvas id="badgeCanvas" width="128" height="128"></canvas>
+        </div>
+        
+        <br>
+        <button onclick="downloadImage('png')">📥 Baixar PNG</button>
+        <button onclick="downloadImage('ico')">📥 Baixar ICO</button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const originalCanvas = document.getElementById('originalCanvas');
+        const badgeCanvas = document.getElementById('badgeCanvas');
+        const originalCtx = originalCanvas.getContext('2d');
+        const badgeCtx = badgeCanvas.getContext('2d');
+        
+        let currentImage = null;
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    currentImage = img;
+                    drawImages();
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function drawImages() {
+            if (!currentImage) return;
+
+            const size = 128;
+            
+            // Desenha original
+            originalCtx.clearRect(0, 0, size, size);
+            originalCtx.drawImage(currentImage, 0, 0, size, size);
+            
+            // Desenha com badge
+            badgeCtx.clearRect(0, 0, size, size);
+            badgeCtx.drawImage(currentImage, 0, 0, size, size);
+            
+            // Adiciona badge vermelho
+            const badgeSize = Math.floor(size / 3);
+            const badgeX = size - badgeSize - 4;
+            const badgeY = 4;
+            
+            // Borda branca
+            badgeCtx.fillStyle = 'white';
+            badgeCtx.beginPath();
+            badgeCtx.arc(badgeX + badgeSize/2, badgeY + badgeSize/2, badgeSize/2 + 2, 0, Math.PI * 2);
+            badgeCtx.fill();
+            
+            // Círculo vermelho
+            badgeCtx.fillStyle = '#FF0000';
+            badgeCtx.beginPath();
+            badgeCtx.arc(badgeX + badgeSize/2, badgeY + badgeSize/2, badgeSize/2, 0, Math.PI * 2);
+            badgeCtx.fill();
+        }
+
+        function downloadImage(format) {
+            if (!currentImage) {
+                alert('Por favor, carregue uma imagem primeiro!');
+                return;
+            }
+
+            const link = document.createElement('a');
+            
+            if (format === 'png') {
+                link.download = 'favicon-badge.png';
+                link.href = badgeCanvas.toDataURL('image/png');
+            } else if (format === 'ico') {
+                // Para ICO, vamos baixar como PNG e você converte depois
+                link.download = 'favicon-badge.png';
+                link.href = badgeCanvas.toDataURL('image/png');
+                alert('Baixando como PNG. Use um conversor online (convertio.co/png-ico) para converter para ICO.');
+            }
+            
+            link.click();
+        }
+    </script>
+</body>
+</html>
