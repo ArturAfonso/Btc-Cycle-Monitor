@@ -11,17 +11,17 @@ import 'core/preferences/preferences_cubit.dart';
 import 'features/home/presentation/cubit/home_cubit.dart';
 import 'features/home/presentation/cubit/home_state.dart';
 import 'features/home/presentation/pages/home_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   
-  // Inicializa todos os locales necessários para formatação de moeda
   await initializeDateFormatting();
   
-  // Inicializa o serviço de notificações
   await NotificationService.initialize();
   
-  // Configuração da janela - SEMPRE maximizada ao iniciar
   await windowManager.ensureInitialized();
   
   WindowOptions windowOptions = const WindowOptions(
@@ -29,20 +29,17 @@ void main() async {
     center: true,
     backgroundColor: Colors.transparent,
     skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden, // Remove barra de título padrão
-    windowButtonVisibility: false, // Remove botões padrão
+    titleBarStyle: TitleBarStyle.hidden, 
+    windowButtonVisibility: false,
   );
   
   windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
     await windowManager.focus();
-    await windowManager.maximize(); // 🚀 SEMPRE MAXIMIZADO AO INICIAR!
+    await windowManager.maximize(); 
   });
-  
-  // Inicializa todas as dependências
+ 
   await initializeDependencies();
-  
-  // System tray será inicializado após o app estar rodando
   
   runApp(const MyApp());
 }
@@ -63,7 +60,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          // Conecta o callback para refresh automático quando moeda mudar
+         
           final preferencesCubit = context.read<PreferencesCubit>();
           preferencesCubit.onCurrencyChanged = (currency) {
             final homeCubit = context.read<HomeCubit>();
@@ -74,7 +71,7 @@ class MyApp extends StatelessWidget {
             title: 'BTC Cycle Monitor',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
-            themeMode: ThemeMode.dark, // Força tema escuro
+            themeMode: ThemeMode.dark, 
             home: const WindowLifecycleWrapper(),
             debugShowCheckedModeBanner: false,
           );
@@ -84,7 +81,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/// Wrapper para gerenciar o ciclo de vida da janela e system tray
 class WindowLifecycleWrapper extends StatefulWidget {
   const WindowLifecycleWrapper({super.key});
 
@@ -102,24 +98,23 @@ class _WindowLifecycleWrapperState extends State<WindowLifecycleWrapper>
     homeCubit = context.read<HomeCubit>();
     WidgetsBinding.instance.addObserver(this);
     
-    // Inicializa o system tray após a primeira renderização
+   
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initializeSystemTray();
     });
     
-    // Escuta mudanças no estado para atualizar o system tray
+    
     homeCubit.stream.listen((state) {
       _updateSystemTray(state);
     });
   }
 
-  /// Inicializa o system tray de forma segura
   Future<void> _initializeSystemTray() async {
     try {
       await SystemTrayService.initialize();
-      print("✅ System Tray inicializado com sucesso após primeiro frame");
+      debugPrint("✅ System Tray inicializado com sucesso após primeiro frame");
     } catch (e) {
-      print("❌ Erro ao inicializar System Tray: $e");
+      debugPrint("❌ Erro ao inicializar System Tray");
     }
   }
 
@@ -130,14 +125,12 @@ class _WindowLifecycleWrapperState extends State<WindowLifecycleWrapper>
     super.dispose();
   }
 
-  /// Atualiza o system tray com informações do Bitcoin
   void _updateSystemTray(HomeState state) {
     if (state is HomeLoaded && state.data.bitcoinData != null) {
       final bitcoinData = state.data.bitcoinData!;
       final price = '\$${bitcoinData.currentPrice.toStringAsFixed(2)}';
       final change = '${bitcoinData.changePercentage >= 0 ? '+' : ''}${bitcoinData.changePercentage.toStringAsFixed(2)}%';
       
-      // Atualiza tooltip e menu do system tray
       SystemTrayService.updateTooltip(price, change);
       SystemTrayService.updateMenuPrice(price, change);
     }
@@ -150,21 +143,21 @@ class _WindowLifecycleWrapperState extends State<WindowLifecycleWrapper>
     switch (state) {
       case AppLifecycleState.resumed:
         homeCubit.restartAutoRefresh();
-        print('🔄 App resumed - Timer reiniciado');
+        debugPrint('🔄 App resumed - Timer reiniciado');
         break;
       case AppLifecycleState.paused:
-        print('⏸️ App paused - Timer continua em segundo plano');
+        debugPrint('⏸️ App paused - Timer continua em segundo plano');
         break;
       case AppLifecycleState.detached:
         homeCubit.stopAutoRefresh();
         SystemTrayService.dispose();
-        print('🔚 App detached - Recursos limpos');
+        debugPrint('🔚 App detached - Recursos limpos');
         break;
       case AppLifecycleState.inactive:
-        print('😴 App inactive');
+        debugPrint('😴 App inactive');
         break;
       case AppLifecycleState.hidden:
-        print('👻 App hidden');
+        debugPrint('👻 App hidden');
         break;
     }
   }

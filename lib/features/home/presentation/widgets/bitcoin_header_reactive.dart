@@ -6,8 +6,8 @@ import '../../../../core/preferences/preferences_cubit.dart';
 import '../../../../core/preferences/preferences_state.dart';
 import '../../../../core/utils/utility.dart';
 
-/// Widget reativo que exibe o cabeçalho com informações do Bitcoin
-/// Escuta automaticamente mudanças na moeda selecionada via PreferencesCubit
+
+
 class BitcoinHeaderReactive extends StatelessWidget {
   final BitcoinData bitcoinData;
 
@@ -17,13 +17,13 @@ class BitcoinHeaderReactive extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       builder: (context, preferencesState) {
-        String selectedLocale = 'ru_RU'; // Default - Rublo russo
-        String selectedCurrency = 'RUB'; // Para exibição do código
+        String selectedLocale = 'ru_RU'; 
+        String selectedCurrency = 'RUB'; 
         
         if (preferencesState is PreferencesLoaded) {
           selectedLocale = preferencesState.selectedLocale;
           selectedCurrency = preferencesState.selectedCurrency;
-          print('🎯 BitcoinHeaderReactive: Locale do state = $selectedLocale');
+          debugPrint('🎯 BitcoinHeaderReactive: Locale do state = $selectedLocale');
         }
 
         return Container(
@@ -48,7 +48,7 @@ class BitcoinHeaderReactive extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header com logo e refresh
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -111,7 +111,7 @@ class BitcoinHeaderReactive extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               
-              // Preço principal e variação
+              
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -169,7 +169,7 @@ class BitcoinHeaderReactive extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               
-              // Estatísticas adicionais
+              
               Row(
                 children: [
                   Expanded(
@@ -237,7 +237,7 @@ class BitcoinHeaderReactive extends StatelessWidget {
   }
 
   String _formatCompactPrice(double price, String locale) {
-    // Mapa de símbolos de moeda por locale
+    
     final Map<String, String> currencySymbols = {
       'en_US': '\$',
       'pt_BR': 'R\$',

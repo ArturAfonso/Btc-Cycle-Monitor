@@ -1,4 +1,4 @@
-/// Modelo para um candle OHLC (Open, High, Low, Close)
+
 class BitcoinOHLCCandle {
   final DateTime timestamp;
   final double open;
@@ -14,8 +14,8 @@ class BitcoinOHLCCandle {
     required this.close,
   });
 
-  /// Factory para criar a partir do array da API CoinGecko
-  /// Formato: [timestamp_ms, open, high, low, close]
+  
+  
   factory BitcoinOHLCCandle.fromJson(List<dynamic> ohlcArray) {
     if (ohlcArray.length != 5) {
       throw FormatException('OHLC array deve ter 5 elementos: [timestamp, open, high, low, close]');
@@ -30,16 +30,16 @@ class BitcoinOHLCCandle {
     );
   }
 
-  /// Retorna apenas o preço de fechamento (usado para cálculos de SMA)
+  
   double get closePrice => close;
 
-  /// Retorna a variação percentual do candle
+  
   double get changePercent => ((close - open) / open) * 100;
 
-  /// Retorna se o candle é bullish (alta)
+  
   bool get isBullish => close > open;
 
-  /// Retorna se o candle é bearish (baixa)
+  
   bool get isBearish => close < open;
 
   @override
@@ -53,7 +53,7 @@ class BitcoinOHLCCandle {
            ')';
   }
 
-  /// Converte para JSON
+  
   Map<String, dynamic> toJson() {
     return {
       'timestamp': timestamp.millisecondsSinceEpoch,
@@ -65,14 +65,14 @@ class BitcoinOHLCCandle {
   }
 }
 
-/// Modelo para resposta completa de dados OHLC
+
 class BitcoinOHLCModel {
   final List<BitcoinOHLCCandle> candles;
 
   const BitcoinOHLCModel({required this.candles});
 
-  /// Factory para criar a partir da resposta JSON da API
-  /// Response é uma lista de arrays: [[timestamp, o, h, l, c], ...]
+  
+  
   factory BitcoinOHLCModel.fromJson(List<dynamic> json) {
     return BitcoinOHLCModel(
       candles: json
@@ -81,25 +81,25 @@ class BitcoinOHLCModel {
     );
   }
 
-  /// Retorna apenas os preços de fechamento (útil para cálculos de SMA)
+  
   List<double> get closePrices => candles.map((c) => c.close).toList();
 
-  /// Retorna o candle mais recente
+  
   BitcoinOHLCCandle? get latest => candles.isNotEmpty ? candles.last : null;
 
-  /// Retorna o candle mais antigo
+  
   BitcoinOHLCCandle? get oldest => candles.isNotEmpty ? candles.first : null;
 
-  /// Retorna a quantidade de candles
+  
   int get length => candles.length;
 
-  /// Retorna os últimos N candles
+  
   List<BitcoinOHLCCandle> getLastN(int n) {
     if (candles.length <= n) return candles;
     return candles.sublist(candles.length - n);
   }
 
-  /// Retorna os últimos N preços de fechamento
+  
   List<double> getLastNClosePrices(int n) {
     final lastCandles = getLastN(n);
     return lastCandles.map((c) => c.close).toList();

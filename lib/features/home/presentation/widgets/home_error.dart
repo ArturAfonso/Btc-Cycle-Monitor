@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_constants.dart';
 
-/// Widget que exibe estado de erro
+
 class HomeErrorWidget extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;

@@ -1060,7 +1060,7 @@ _CustomIndicatorCard(
     );
   }
 
-  /// Retorna a cor baseada no status da dominância
+ 
   Color _getBitcoinDominanceColor(String status) {
     switch (status) {
       case 'extreme_fear':
@@ -1322,43 +1322,6 @@ class _CustomIndicatorCard extends StatelessWidget {
                   message: bitcoinDominanceData!.message,
                   cycleProximity: bitcoinDominanceData!.cycleProximity,
 
-                  // 🧪 MOCKS PARA TESTE - Descomente para testar cenários específicos
-
-                  // 🛡️ MEDO EXTREMO (Dominância 70%+, Proximidade 0%)
-                  /*  dominance: 75.0,
-                  status: 'extreme_fear',
-                  message: 'Medo Extremo - Fuga para Bitcoin',
-                  cycleProximity: 0.0, */
-
-                  // 📈 MEDO (Dominância 55-65%, Proximidade ~20%)
-                  /* dominance: 60.0,
-                  status: 'fear',
-                  message: 'Medo - Preferência pelo Bitcoin',
-                  cycleProximity: 25.0, */
-
-                  // ⚖️ NEUTRO (Dominância 45-55%, Proximidade ~50%)
-                  /* dominance: 50.0,
-                  status: 'neutral',
-                  message: 'Neutro - Equilíbrio no mercado',
-                  cycleProximity: 50.0, */
-
-                  // 🚀 GANÂNCIA (Dominância 35-45%, Proximidade ~75%)
-                  /*  dominance: 40.0,
-                  status: 'greed',
-                  message: 'Ganância - Dinheiro indo para altcoins',
-                  cycleProximity: 75.0, */
-
-                  // 🌙 GANÂNCIA EXTREMA (Dominância <35%, Proximidade 100%)
-                  /*   dominance: 30.0,
-                  status: 'extreme_greed',
-                  message: 'Ganância Extrema - Altseason',
-                  cycleProximity: 100.0,
- */
-                  // 🔥 ALTSEASON TOTAL (Dominância muito baixa, Altcoins dominando)
-                  /*   dominance: 25.0,
-                  status: 'extreme_greed',
-                  message: 'Ganância Extrema - Altseason',
-                  cycleProximity: 100.0, */
                 ),
               ),
             )
@@ -1389,7 +1352,6 @@ class _CustomIndicatorCard extends StatelessWidget {
   }
 }
 
-/// Widget para exibir resumo geral dos indicadores
 class _SummaryCard extends StatelessWidget {
   const _SummaryCard();
 

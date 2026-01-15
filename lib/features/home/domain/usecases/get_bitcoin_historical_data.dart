@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../repositories/home_repository.dart';
 import '../../data/models/bitcoin_historical_data_model.dart';
 
@@ -10,9 +12,9 @@ class GetBitcoinHistoricalDataUseCase {
   /// Busca dados históricos baseado no período selecionado
   /// Retorna o modelo completo com timestamps e preços
   Future<BitcoinHistoricalDataModel> call(String period, {String currency = 'usd'}) async {
-    print('📈 [UseCase] Iniciando busca de dados históricos para período: $period, currency: $currency');
+    debugPrint('📈 [UseCase] Iniciando busca de dados históricos para período: $period, currency: $currency');
     final historicalData = await repository.getBitcoinHistoricalDataComplete(period, currency: currency);
-    print('✅ [UseCase] Dados históricos obtidos para período: $period in $currency');
+    debugPrint('✅ [UseCase] Dados históricos obtidos para período: $period in $currency');
     return historicalData;
   }
   

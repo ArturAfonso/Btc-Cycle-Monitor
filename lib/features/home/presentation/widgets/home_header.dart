@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/home_data.dart';
 import '../../../../core/constants/app_constants.dart';
 
-/// Widget que exibe o cabeçalho da tela Home
+
 class HomeHeader extends StatelessWidget {
   final HomeData data;
 

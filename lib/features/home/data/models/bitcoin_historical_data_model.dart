@@ -1,4 +1,4 @@
-/// Modelo para um ponto de dados históricos do Bitcoin
+
 class BitcoinHistoricalPoint {
   final DateTime timestamp;
   final double price;
@@ -12,7 +12,7 @@ class BitcoinHistoricalPoint {
     this.volume,
   });
 
-  /// Factory para criar a partir do array da API: [timestamp_ms, value]
+  
   factory BitcoinHistoricalPoint.fromPriceArray(List<dynamic> priceArray) {
     return BitcoinHistoricalPoint(
       timestamp: DateTime.fromMillisecondsSinceEpoch(priceArray[0] as int),
@@ -26,7 +26,7 @@ class BitcoinHistoricalPoint {
   }
 }
 
-/// Modelo para resposta completa dos dados históricos
+
 class BitcoinHistoricalDataModel {
   final List<BitcoinHistoricalPoint> prices;
   final List<BitcoinHistoricalPoint> marketCaps;
@@ -38,7 +38,7 @@ class BitcoinHistoricalDataModel {
     required this.totalVolumes,
   });
 
-  /// Factory para criar a partir do JSON da API
+  
   factory BitcoinHistoricalDataModel.fromJson(Map<String, dynamic> json) {
     return BitcoinHistoricalDataModel(
       prices: (json['prices'] as List<dynamic>)
@@ -53,7 +53,7 @@ class BitcoinHistoricalDataModel {
     );
   }
 
-  /// Converte apenas os preços para lista de doubles (para o gráfico atual)
+  
   List<double> get chartData => prices.map((point) => point.price).toList();
 
   @override

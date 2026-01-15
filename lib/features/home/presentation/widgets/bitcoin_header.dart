@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/home_data.dart';
 import '../cubit/home_cubit.dart';
 
-/// Widget que exibe o cabeçalho com informações do Bitcoin
+
 class BitcoinHeader extends StatefulWidget {
   final BitcoinData bitcoinData;
 
@@ -31,7 +31,7 @@ class _BitcoinHeaderState extends State<BitcoinHeader> {
 
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       builder: (context, preferencesState) {
-         String selectedCurrency = 'USD'; // Default
+         String selectedCurrency = 'USD'; 
         
         if (preferencesState is PreferencesLoaded) {
           selectedCurrency = preferencesState.selectedCurrency;
@@ -59,7 +59,7 @@ class _BitcoinHeaderState extends State<BitcoinHeader> {
                                     ),
                                   ),
                             const SizedBox(width: 8),
-                            // Indicador de atualização automática com tooltip
+                            
                             Tooltip(
                               message: 'Atualização automática ativa (a cada 2 minutos)',
                               child: Container(
@@ -160,11 +160,3 @@ class _BitcoinHeaderState extends State<BitcoinHeader> {
 
 
 
- /*  const Text(
-                  'Bitcoin (BTC/USD)',
-                  style: TextStyle(
-                    color: Color(0xFF94A3B8),
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 8), */

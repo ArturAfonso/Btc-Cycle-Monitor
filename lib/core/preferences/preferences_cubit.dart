@@ -1,15 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/preferences_service.dart';
 import 'preferences_state.dart';
 
-/// Cubit que gerencia o estado global das preferências do usuário
+
 class PreferencesCubit extends Cubit<PreferencesState> {
-  // Callback para notificar mudanças que requerem atualizações de dados
+  
   Function(String currency)? onCurrencyChanged;
   
   PreferencesCubit() : super(PreferencesLoading());
 
-  /// Carrega todas as preferências do SharedPreferences
+  
   Future<void> loadPreferences() async {
     try {
       emit(PreferencesLoading());
@@ -37,18 +38,18 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza a moeda selecionada
+  
   Future<void> updateCurrency(String currency) async {
     try {
-      print('🔄 PreferencesCubit: Atualizando moeda para: $currency');
+      debugPrint('🔄 PreferencesCubit: Atualizando moeda para: $currency');
       
-      // Primeiro salva no SharedPreferences (que também salva o locale)
+      
       await PreferencesService.setSelectedCurrency(currency);
       
-      // Depois recupera o locale que foi salvo
+      
       final locale = await PreferencesService.getSelectedLocale();
       
-      print('✅ PreferencesCubit: Locale recuperado: $locale');
+      debugPrint('✅ PreferencesCubit: Locale recuperado: $locale');
       
       if (state is PreferencesLoaded) {
         final currentState = state as PreferencesLoaded;
@@ -57,18 +58,18 @@ class PreferencesCubit extends Cubit<PreferencesState> {
           selectedLocale: locale,
         ));
         
-        print('✅ PreferencesCubit: Estado emitido com currency=$currency e locale=$locale');
+        debugPrint('✅ PreferencesCubit: Estado emitido com currency=$currency e locale=$locale');
         
-        // Notifica a mudança de moeda para recarregar dados das APIs
+        
         onCurrencyChanged?.call(currency);
       }
     } catch (e) {
-      print('❌ PreferencesCubit: Erro ao salvar moeda: $e');
+      debugPrint('❌ PreferencesCubit: Erro ao salvar moeda: $e');
       emit(PreferencesError('Erro ao salvar moeda: $e'));
     }
   }
 
-  /// Atualiza o intervalo de atualização
+  
   Future<void> updateInterval(String interval) async {
     try {
       await PreferencesService.setSelectedInterval(interval);
@@ -82,7 +83,7 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza o tema selecionado
+  
   Future<void> updateTheme(String theme) async {
     try {
       await PreferencesService.setSelectedTheme(theme);
@@ -96,7 +97,7 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza se deve iniciar com o sistema
+  
   Future<void> updateStartWithSystem(bool startWithSystem) async {
     try {
       await PreferencesService.setStartWithSystem(startWithSystem);
@@ -110,7 +111,7 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza se deve exibir notificações
+  
   Future<void> updateShowNotifications(bool showNotifications) async {
     try {
       await PreferencesService.setShowNotifications(showNotifications);
@@ -124,19 +125,19 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza se os alertas devem ser recorrentes
+  
   Future<void> updateAlertRecurring(bool recurring) async {
     try {
       await PreferencesService.setAlertRecurring(recurring);
       
-      // Se ativou recorrente e não há alerta ativo, tenta restaurar o último disparado
+      
       if (recurring) {
         final currentAlert = await PreferencesService.getAlertTargetFiat();
         if (currentAlert == null) {
           final lastTriggered = await PreferencesService.getLastTriggeredAlertFiat();
           if (lastTriggered != null && lastTriggered > 0.0) {
             await PreferencesService.setAlertTargetFiat(lastTriggered);
-            print('🔄 PreferencesCubit: Alerta recorrente ativado - Restaurando último alerta: $lastTriggered');
+            debugPrint('🔄 PreferencesCubit: Alerta recorrente ativado - Restaurando último alerta: $lastTriggered');
             
             if (state is PreferencesLoaded) {
               final currentState = state as PreferencesLoaded;
@@ -149,9 +150,9 @@ class PreferencesCubit extends Cubit<PreferencesState> {
           }
         }
       } else {
-        // Se desativou recorrente, limpa o histórico de último alerta
+        
         await PreferencesService.setLastTriggeredAlertFiat(null);
-        print('🗑️ PreferencesCubit: Alerta recorrente desativado - Limpando histórico');
+        debugPrint('🗑️ PreferencesCubit: Alerta recorrente desativado - Limpando histórico');
       }
       
       if (state is PreferencesLoaded) {
@@ -163,15 +164,15 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  // ========== ALERTAS ==========
+  
 
-  /// Atualiza o alvo de preço em BTC (null ou 0.0 desativa)
-  /// Ao configurar BTC, remove o alvo Fiat automaticamente
+  
+  
   Future<void> updateAlertTargetBtc(double? value, {String? trend}) async {
     try {
       await PreferencesService.setAlertTargetBtc(value);
       
-      // Se configurou BTC, remove Fiat e salva a tendência
+      
       if (value != null && value > 0.0) {
         await PreferencesService.setAlertTargetFiat(null);
         if (trend != null) {
@@ -191,16 +192,16 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza o alvo de preço em Fiat (null ou 0.0 desativa)
-  /// Ao configurar Fiat, remove o alvo BTC automaticamente
+  
+  
   Future<void> updateAlertTargetFiat(double? value, {String? trend}) async {
     try {
-      print('🔔 PreferencesCubit.updateAlertTargetFiat - Valor: $value, Trend: $trend');
+      debugPrint('🔔 PreferencesCubit.updateAlertTargetFiat - Valor: $value, Trend: $trend');
       
       await PreferencesService.setAlertTargetFiat(value);
-      print('🔔 PreferencesCubit.updateAlertTargetFiat - Salvo no SharedPreferences');
+      debugPrint('🔔 PreferencesCubit.updateAlertTargetFiat - Salvo no SharedPreferences');
       
-      // Se configurou Fiat, remove BTC e salva a tendência
+      
       if (value != null && value > 0.0) {
         await PreferencesService.setAlertTargetBtc(null);
         if (trend != null) {
@@ -215,20 +216,20 @@ class PreferencesCubit extends Cubit<PreferencesState> {
           alertTargetBtc: (value != null && value > 0.0) ? null : currentState.alertTargetBtc,
         );
         
-        print('🔔 PreferencesCubit.updateAlertTargetFiat - Novo estado:');
-        print('   alertTargetFiat: ${newState.alertTargetFiat}');
-        print('   alertTargetBtc: ${newState.alertTargetBtc}');
+        debugPrint('🔔 PreferencesCubit.updateAlertTargetFiat - Novo estado:');
+        debugPrint('   alertTargetFiat: ${newState.alertTargetFiat}');
+        debugPrint('   alertTargetBtc: ${newState.alertTargetBtc}');
         
         emit(newState);
-        print('🔔 PreferencesCubit.updateAlertTargetFiat - Estado emitido');
+        debugPrint('🔔 PreferencesCubit.updateAlertTargetFiat - Estado emitido');
       }
     } catch (e) {
-      print('❌ PreferencesCubit.updateAlertTargetFiat - Erro: $e');
+      debugPrint('❌ PreferencesCubit.updateAlertTargetFiat - Erro: $e');
       emit(PreferencesError('Erro ao salvar alerta Fiat: $e'));
     }
   }
 
-  /// Atualiza a porcentagem de oscilação (0.0 desativa)
+  
   Future<void> updateAlertOscillation(double value) async {
     try {
       await PreferencesService.setAlertOscillation(value);
@@ -242,7 +243,7 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Atualiza múltiplas preferências de uma vez
+  
   Future<void> updateMultiplePreferences({
     String? currency,
     String? interval,
@@ -254,14 +255,14 @@ class PreferencesCubit extends Cubit<PreferencesState> {
       if (state is PreferencesLoaded) {
         final currentState = state as PreferencesLoaded;
         
-        // Salva no SharedPreferences
+        
         if (currency != null) await PreferencesService.setSelectedCurrency(currency);
         if (interval != null) await PreferencesService.setSelectedInterval(interval);
         if (theme != null) await PreferencesService.setSelectedTheme(theme);
         if (startWithSystem != null) await PreferencesService.setStartWithSystem(startWithSystem);
         if (showNotifications != null) await PreferencesService.setShowNotifications(showNotifications);
         
-        // Atualiza o estado
+        
         emit(currentState.copyWith(
           selectedCurrency: currency,
           selectedInterval: interval,
@@ -275,14 +276,14 @@ class PreferencesCubit extends Cubit<PreferencesState> {
     }
   }
 
-  /// Reseta todas as preferências para os valores padrão
+  
   Future<void> resetToDefaults() async {
     try {
       await PreferencesService.clearAllPreferences();
       
       emit(PreferencesLoaded(
         selectedCurrency: 'USD',
-        selectedLocale: 'ru_RU', // Rublo russo como padrão
+        selectedLocale: 'ru_RU', 
         selectedInterval: '30s',
         selectedTheme: 'dark',
         startWithSystem: false,

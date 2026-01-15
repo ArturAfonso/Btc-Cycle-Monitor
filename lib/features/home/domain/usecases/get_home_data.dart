@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../entities/home_data.dart';
 import '../repositories/home_repository.dart';
 
@@ -9,9 +11,9 @@ class GetHomeDataUseCase {
   GetHomeDataUseCase(this.repository);
 
   Future<HomeData> call() async {
-    print('🔄 [UseCase] Iniciando busca de dados da Home...');
+    debugPrint('🔄 [UseCase] Iniciando busca de dados da Home...');
     final homeData = await repository.getHomeData();
-    print('✅ [UseCase] Dados da Home obtidos com sucesso');
+    debugPrint('✅ [UseCase] Dados da Home obtidos com sucesso');
     return homeData;
   }
 }

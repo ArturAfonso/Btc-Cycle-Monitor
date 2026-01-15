@@ -12,7 +12,7 @@ import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
 import 'bitcoin_header.dart';
 
-/// Widget que exibe o gráfico do Bitcoin usando fl_chart
+
 class BitcoinChart extends StatefulWidget {
   final BitcoinData bitcoinData;
 
@@ -23,12 +23,12 @@ class BitcoinChart extends StatefulWidget {
 }
 
 class _BitcoinChartState extends State<BitcoinChart> {
-  /// Retorna a cor da linha do gráfico baseada na mudança de preço
+  
   Color get lineColor {
     final isPositive = widget.bitcoinData.changePercentage > 0;
     return isPositive
-        ? const Color(AppColors.successColor) // Verde para alta
-        : const Color(0xFFEF4444); // Vermelho para baixa
+        ? const Color(AppColors.successColor) 
+        : const Color(0xFFEF4444); 
   }
 
   @override
@@ -52,10 +52,10 @@ class _BitcoinChartState extends State<BitcoinChart> {
                   padding: const EdgeInsets.all(20.0),
                   child: BlocBuilder<HomeCubit, HomeState>(
                     builder: (context, state) {
-                      // Verifica se está carregando dados do gráfico
+                      
                       final isLoadingChart = state is HomeLoaded && state.isLoadingChart;
 
-                      // Usa os dados do estado para garantir que estão atualizados
+                      
                       BitcoinHistoricalDataModel? historicalData = widget.bitcoinData.historicalData;
 
                       if (state is HomeLoaded && state.data.bitcoinData != null) {
@@ -65,7 +65,7 @@ class _BitcoinChartState extends State<BitcoinChart> {
                       return BlocBuilder<PreferencesCubit, PreferencesState>(
                         
                         builder: (context, state) {
-                          String selectedCurrency = 'USD'; // Default
+                          String selectedCurrency = 'USD'; 
                            if (state is PreferencesLoaded) {
           selectedCurrency = state.selectedCurrency;
         }
@@ -73,13 +73,13 @@ class _BitcoinChartState extends State<BitcoinChart> {
                           return Stack(
                             alignment: Alignment.topRight,
                             children: [
-                              // Gráfico principal usando fl_chart
+                              
                               if (historicalData != null && historicalData.prices.isNotEmpty)
                                 _buildLineChart(historicalData, selectedCurrency)
                               else
                                 _buildEmptyChart(),
 
-                              // Overlay de loading se estiver carregando
+                              
                               if (isLoadingChart)
                                 Container(
                                   color: const Color(0xFF1E293B).withValues(alpha: 0.8),
@@ -105,23 +105,23 @@ class _BitcoinChartState extends State<BitcoinChart> {
   }
 
   Widget _buildLineChart(BitcoinHistoricalDataModel historicalData, String selectedCurrency) {
-    print('📊 BitcoinChart: Rendering chart with ${historicalData.prices.length} points in $selectedCurrency');
+    debugPrint('📊 BitcoinChart: Rendering chart with ${historicalData.prices.length} points in $selectedCurrency');
     
-    // Cria os pontos do gráfico diretamente dos preços da API
-    // A API já retorna os preços na moeda selecionada
+    
+    
     final spots = historicalData.prices.asMap().entries.map((entry) {
       return FlSpot(entry.key.toDouble(), entry.value.price);
     }).toList();
 
     final minY = spots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
     final maxY = spots.map((s) => s.y).reduce((a, b) => a > b ? a : b);
-    final padding = (maxY - minY) * 0.1; // 10% padding
+    final padding = (maxY - minY) * 0.1; 
 
-    // Lógica simples: sempre 4 divisões iguais
+    
     final chartMinY = minY - padding;
     final chartMaxY = maxY + padding;
     final range = chartMaxY - chartMinY;
-    final yInterval = range / 4; // 4 intervalos = 5 valores (0, 1, 2, 3, 4)
+    final yInterval = range / 4; 
 
     return LineChart(
       LineChartData(
@@ -200,16 +200,16 @@ class _BitcoinChartState extends State<BitcoinChart> {
                   final point = historicalData.prices[index];
                   final cubit = context.read<HomeCubit>();
 
-                  // Formatação do tooltip baseada no período
+                  
                   String dateFormat = switch (cubit.selectedPeriod) {
-                    '1D' => 'dd/MM HH:mm', // 28/10 14:30 (mostra dia e hora)
-                    '1W' => 'dd/MM HH:mm', // 28/10 14:30
-                    '1M' => 'dd/MM', // 28/10 (apenas dia)
-                    '3M' => 'dd/MM', // 28/10 (apenas dia)
-                    '1Y' => 'MMM/yy', // Out/24
+                    '1D' => 'dd/MM HH:mm', 
+                    '1W' => 'dd/MM HH:mm', 
+                    '1M' => 'dd/MM', 
+                    '3M' => 'dd/MM', 
+                    '1Y' => 'MMM/yy', 
                     _ => 'dd/MM HH:mm',
                   };
-                  print('${Utility().priceToCurrency(point.price, fiat: selectedCurrency)}\n${DateFormat(dateFormat).format(point.timestamp)}');
+                  debugPrint('${Utility().priceToCurrency(point.price, fiat: selectedCurrency)}\n${DateFormat(dateFormat).format(point.timestamp)}');
 
                   return LineTooltipItem(
                     '${Utility().priceToCurrency(point.price, fiat: selectedCurrency)}\n${DateFormat(dateFormat).format(point.timestamp)}',
@@ -221,8 +221,8 @@ class _BitcoinChartState extends State<BitcoinChart> {
             },
           ),
           touchCallback: (event, response) {
-            // Adiciona feedback haptic se necessário
-            // HapticFeedback.lightImpact();
+            
+            
           },
           handleBuiltInTouches: true,
         ),
@@ -248,38 +248,38 @@ class _BitcoinChartState extends State<BitcoinChart> {
     final cubit = context.read<HomeCubit>();
     switch (cubit.selectedPeriod) {
       case '1D':
-        return DateFormat('dd/MM\nHH:mm').format(date); // 28/10\n14:30 (dia e hora em linhas separadas)
+        return DateFormat('dd/MM\nHH:mm').format(date); 
       case '1W':
-        return DateFormat('EEE dd').format(date); // Seg 28
+        return DateFormat('EEE dd').format(date); 
       case '1M':
-        return DateFormat('dd').format(date); // 28 (apenas dia do mês)
+        return DateFormat('dd').format(date); 
       case '3M':
-        return DateFormat('dd/MM').format(date); // 28/10
+        return DateFormat('dd/MM').format(date); 
       case '1Y':
-        return DateFormat('MMM').format(date); // Out
+        return DateFormat('MMM').format(date); 
       default:
         return DateFormat('dd/MM\nHH:mm').format(date);
     }
   }
 
-  // Método simples para títulos do eixo Y
+  
   Widget _leftTitleWidgets(double value, TitleMeta meta, double chartMinY, double chartMaxY) {
-    // Calcula os 5 valores fixos que queremos mostrar
+    
     final range = chartMaxY - chartMinY;
     final step = range / 4;
 
     final targetValues = [
-      chartMinY, // Valor mínimo
-      chartMinY + step, // 25%
-      chartMinY + step * 2, // 50%
-      chartMinY + step * 3, // 75%
-      chartMaxY, // Valor máximo
+      chartMinY, 
+      chartMinY + step, 
+      chartMinY + step * 2, 
+      chartMinY + step * 3, 
+      chartMaxY, 
     ];
 
-    // Verifica se o valor atual está próximo de algum dos targets
+    
     for (double target in targetValues) {
       if ((value - target).abs() < step * 0.1) {
-        // 10% de tolerância
+        
         return Padding(
           padding: const EdgeInsets.only(right: 10),
           child: Text(

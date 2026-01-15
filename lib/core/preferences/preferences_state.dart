@@ -1,10 +1,10 @@
-/// Estados possíveis para as preferências do usuário
+
 abstract class PreferencesState {}
 
-/// Estado inicial - carregando preferências
+
 class PreferencesLoading extends PreferencesState {}
 
-/// Estado com preferências carregadas
+
 class PreferencesLoaded extends PreferencesState {
   final String selectedCurrency;
   final String selectedLocale;
@@ -14,7 +14,7 @@ class PreferencesLoaded extends PreferencesState {
   final bool showNotifications;
   final bool alertRecurring;
   
-  // Alertas
+  
   final double? alertTargetBtc;
   final double? alertTargetFiat;
   final double alertOscillation;
@@ -32,7 +32,7 @@ class PreferencesLoaded extends PreferencesState {
     this.alertOscillation = 0.0,
   });
 
-  /// Cria uma cópia com alguns valores alterados
+  
   PreferencesLoaded copyWith({
     String? selectedCurrency,
     String? selectedLocale,
@@ -69,7 +69,7 @@ class PreferencesLoaded extends PreferencesState {
   }
 }
 
-/// Estado de erro ao carregar/salvar preferências
+
 class PreferencesError extends PreferencesState {
   final String message;
 

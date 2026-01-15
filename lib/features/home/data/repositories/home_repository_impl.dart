@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../domain/entities/home_data.dart';
 import '../../domain/repositories/home_repository.dart';
 import '../datasources/home_local_datasource.dart';
@@ -6,8 +8,8 @@ import '../models/home_data_model.dart';
 import '../models/bitcoin_historical_data_model.dart';
 import '../api/coingecko_api.dart';
 
-/// Implementação concreta do repositório da Home
-/// Coordena entre fontes de dados local e remota
+
+
 class HomeRepositoryImpl implements HomeRepository {
   final HomeRemoteDataSource remoteDataSource;
   final HomeLocalDataSource localDataSource;
@@ -17,19 +19,19 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<HomeData> getHomeData() async {
     try {
-      // Tenta pegar dados remotos primeiro
+      
       final remoteData = await remoteDataSource.getHomeData();
 
-      // Cache os dados localmente
+      
       await localDataSource.cacheHomeData(remoteData);
 
       return remoteData;
     } catch (e) {
-      // Se falhar, tenta dados em cache
+      
       try {
         return await localDataSource.getCachedHomeData();
       } catch (cacheError) {
-        // Se não há cache, retorna dados padrão
+        
         return HomeDataModel(
           title: 'BTC Cycle Monitor',
           subtitle: 'Dados indisponíveis',
@@ -50,7 +52,7 @@ class HomeRepositoryImpl implements HomeRepository {
     try {
       return await remoteDataSource.getBitcoinHistoricalData(period, currency: currency);
     } catch (e) {
-      // Em caso de erro, retorna dados simulados
+      
       return _generateFallbackChartData();
     }
   }
@@ -58,38 +60,38 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<BitcoinHistoricalDataModel> getBitcoinHistoricalDataComplete(String period, {String currency = 'usd'}) async {
     try {
-      // Usa a API diretamente para obter dados com timestamps reais
+      
       final apiDays = _periodToApiDays(period);
-      print('DEBUG: Period $period -> API parameter: $apiDays, currency: $currency');
+      debugPrint('DEBUG: Period $period -> API parameter: $apiDays, currency: $currency');
       
       final historicalData = await CoinGeckoApi().getBitcoinHistoricalData(
         days: apiDays,
         currency: currency.toLowerCase(),
       );
       
-      print('DEBUG: Direct API call - received ${historicalData.prices.length} points for period $period in $currency');
+      debugPrint('DEBUG: Direct API call - received ${historicalData.prices.length} points for period $period in $currency');
       if (historicalData.prices.isNotEmpty) {
-        print('DEBUG: First timestamp: ${historicalData.prices.first.timestamp}');
-        print('DEBUG: Last timestamp: ${historicalData.prices.last.timestamp}');
-        print('DEBUG: First price: ${historicalData.prices.first.price.toStringAsFixed(2)} $currency');
-        print('DEBUG: Last price: ${historicalData.prices.last.price.toStringAsFixed(2)} $currency');
+        debugPrint('DEBUG: First timestamp: ${historicalData.prices.first.timestamp}');
+        debugPrint('DEBUG: Last timestamp: ${historicalData.prices.last.timestamp}');
+        debugPrint('DEBUG: First price: ${historicalData.prices.first.price.toStringAsFixed(2)} $currency');
+        debugPrint('DEBUG: Last price: ${historicalData.prices.last.price.toStringAsFixed(2)} $currency');
         
-        // Mostra alguns pontos do meio para verificar se os dados fazem sentido
+        
         if (historicalData.prices.length > 10) {
           final midIndex = historicalData.prices.length ~/ 2;
-          print('DEBUG: Mid point ($midIndex): ${historicalData.prices[midIndex].timestamp} - ${historicalData.prices[midIndex].price.toStringAsFixed(2)} $currency');
+          debugPrint('DEBUG: Mid point ($midIndex): ${historicalData.prices[midIndex].timestamp} - ${historicalData.prices[midIndex].price.toStringAsFixed(2)} $currency');
         }
       }
       
       return historicalData;
     } catch (e) {
-      // Em caso de erro, retorna dados simulados
-      print('DEBUG: Error getting complete data for $period: $e');
+      
+      debugPrint('DEBUG: Error getting complete data for $period: $e');
       return _generateFallbackHistoricalData();
     }
   }
 
-  /// Converte o período da UI para o parâmetro da API (mesmo que no datasource)
+  
   String _periodToApiDays(String period) {
     switch (period) {
       case '1D':
@@ -107,7 +109,7 @@ class HomeRepositoryImpl implements HomeRepository {
     }
   }
 
-  /// Gera dados históricos simulados em caso de erro
+  
   BitcoinHistoricalDataModel _generateFallbackHistoricalData() {
     final basePrice = 67000.0;
     final now = DateTime.now();
@@ -129,7 +131,7 @@ class HomeRepositoryImpl implements HomeRepository {
     );
   }
 
-  /// Gera dados simulados em caso de erro na API
+  
   List<double> _generateFallbackChartData() {
     final basePrice = 67000.0;
     final data = <double>[];

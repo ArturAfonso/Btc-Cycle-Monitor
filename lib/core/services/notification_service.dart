@@ -27,7 +27,7 @@ class NotificationService {
   /// Deve ser chamado uma vez no início do app
   static Future<void> initialize() async {
     if (_isInitialized) {
-      print('⚠️ [Notification] Serviço já inicializado');
+      debugPrint('⚠️ [Notification] Serviço já inicializado');
       return;
     }
 
@@ -43,12 +43,12 @@ class NotificationService {
           // Verifica qual arquivo existe
           if (File(pngPath).existsSync()) {
             _iconPath = pngPath;
-            print('🔧 [Notification] Usando ícone PNG: $_iconPath');
+            debugPrint('🔧 [Notification] Usando ícone PNG: $_iconPath');
           } else if (File(icoPath).existsSync()) {
             _iconPath = icoPath;
-            print('🔧 [Notification] Usando ícone ICO: $_iconPath');
+            debugPrint('🔧 [Notification] Usando ícone ICO: $_iconPath');
           } else {
-            print('⚠️ [Notification] Nenhum ícone encontrado, usando padrão');
+            debugPrint('⚠️ [Notification] Nenhum ícone encontrado, usando padrão');
           }
         }
         
@@ -58,13 +58,13 @@ class NotificationService {
           companyName: 'BTC Cycle Monitor',
         );
         _isInitialized = true;
-        print('✅ [Notification] Serviço inicializado com sucesso');
-        print('💡 [Notification] O ícone do cabeçalho vem do ícone do executável .exe');
+        debugPrint('✅ [Notification] Serviço inicializado com sucesso');
+        debugPrint('💡 [Notification] O ícone do cabeçalho vem do ícone do executável .exe');
       } else {
-        print('⚠️ [Notification] Plataforma não suportada');
+        debugPrint('⚠️ [Notification] Plataforma não suportada');
       }
     } catch (e) {
-      print('❌ [Notification] Erro ao inicializar: $e');
+      debugPrint('❌ [Notification] Erro ao inicializar: $e');
     }
   }
 
@@ -181,7 +181,7 @@ class NotificationService {
     Function(String?)? onClicked,
   }) async {
     if (!_isInitialized) {
-      print('⚠️ [Notification] Tentando exibir notificação antes de inicializar');
+      debugPrint('⚠️ [Notification] Tentando exibir notificação antes de inicializar');
       await initialize();
     }
 
@@ -194,7 +194,7 @@ class NotificationService {
             // Tenta tocar o som padrão do Windows
             await SystemSound.play(SystemSoundType.tick);
           } catch (e) {
-            print('⚠️ [Notification] Não foi possível tocar o som: $e');
+            debugPrint('⚠️ [Notification] Não foi possível tocar o som: $e');
           }
         }
         
@@ -208,13 +208,13 @@ class NotificationService {
           imagePath: imagePath ?? (_iconPath.isNotEmpty ? _iconPath : ''),
         );
         
-        print('🔔 [Notification] Notificação Windows exibida: $title');
+        debugPrint('🔔 [Notification] Notificação Windows exibida: $title');
         if (imagePath != null) {
-          print('🖼️ [Notification] Imagem customizada: $imagePath');
+          debugPrint('🖼️ [Notification] Imagem customizada: $imagePath');
         } else if (_iconPath.isNotEmpty) {
-          print('🖼️ [Notification] Ícone padrão: $_iconPath');
+          debugPrint('🖼️ [Notification] Ícone padrão: $_iconPath');
         }
-        print('📊 [Notification] Evento recebido: $result');
+        debugPrint('📊 [Notification] Evento recebido: $result');
         
         // Ativa o badge vermelho no tray icon
         await SystemTrayService.showBadge();
@@ -225,7 +225,7 @@ class NotificationService {
           
           // Detecta clique na notificação (ActivatedEvent)
           if (resultString.contains('ActivatedEvent')) {
-            print('✅ [Notification] Notificação foi CLICADA pelo usuário');
+            debugPrint('✅ [Notification] Notificação foi CLICADA pelo usuário');
             
             // Remove o badge ao clicar na notificação
             await SystemTrayService.hideBadge();
@@ -236,15 +236,15 @@ class NotificationService {
           // Detecta quando a notificação foi dispensada (DismissedEvent)
           else if (resultString.contains('DismissedEvent')) {
             if (resultString.contains('userCanceled')) {
-              print('⏹️ [Notification] Notificação foi FECHADA pelo usuário');
+              debugPrint('⏹️ [Notification] Notificação foi FECHADA pelo usuário');
               
               // Remove o badge ao fechar a notificação
               await SystemTrayService.hideBadge();
             } else if (resultString.contains('timedOut')) {
-              print('⏱️ [Notification] Notificação EXPIROU (tempo esgotado)');
+              debugPrint('⏱️ [Notification] Notificação EXPIROU (tempo esgotado)');
               // Badge permanece quando expira, só remove se usuário interagir
             } else {
-              print('⏹️ [Notification] Notificação foi DISPENSADA: $resultString');
+              debugPrint('⏹️ [Notification] Notificação foi DISPENSADA: $resultString');
               
               // Remove o badge em outros casos de dispensa
               await SystemTrayService.hideBadge();
@@ -254,25 +254,25 @@ class NotificationService {
         }
       } else {
         // Fallback para outras plataformas
-        print('📢 NOTIFICAÇÃO: $title - $body');
+        debugPrint('📢 NOTIFICAÇÃO: $title - $body');
       }
     } catch (e) {
-      print('❌ [Notification] Erro ao exibir notificação: $e');
-      // Fallback: print
-      print('📢 NOTIFICAÇÃO: $title - $body');
+      debugPrint('❌ [Notification] Erro ao exibir notificação: $e');
+      // Fallback: debugPrint
+      debugPrint('📢 NOTIFICAÇÃO: $title - $body');
     }
   }
 
   /// Cancela uma notificação específica
   static Future<void> cancel(int id) async {
     // WinToast não suporta cancelamento de notificações específicas
-    print('⚠️ [Notification] Cancelamento não suportado no Windows');
+    debugPrint('⚠️ [Notification] Cancelamento não suportado no Windows');
   }
 
   /// Cancela todas as notificações
   static Future<void> cancelAll() async {
     // WinToast não suporta cancelamento de todas as notificações
-    print('⚠️ [Notification] Cancelamento não suportado no Windows');
+    debugPrint('⚠️ [Notification] Cancelamento não suportado no Windows');
   }
 
   /// Verifica se as notificações estão habilitadas

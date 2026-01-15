@@ -1,20 +1,20 @@
-/// Modelo de dados que representa a resposta da API do CoinGecko
+
 class BitcoinPriceModel {
   final double usd;
   final double brl;
   final double? eur;
   final double? gbp;
   final double? jpy;
-  final double usd24hChange; // Mudança percentual em 24h
-  final double brl24hChange; // Mudança percentual em 24h (BRL)
-  final double? eur24hChange; // Mudança percentual em 24h (EUR)
-  final double? gbp24hChange; // Mudança percentual em 24h (GBP)
-  final double? jpy24hChange; // Mudança percentual em 24h (JPY)
-  final double? marketCap;   // Market Cap em USD
-  final double? volume24h;   // Volume 24h em USD
-  final double? high24h;     // Máxima 24h
-  final double? low24h;      // Mínima 24h
-  final String baseCurrency; // Moeda base para exibição
+  final double usd24hChange; 
+  final double brl24hChange; 
+  final double? eur24hChange; 
+  final double? gbp24hChange; 
+  final double? jpy24hChange; 
+  final double? marketCap;   
+  final double? volume24h;   
+  final double? high24h;     
+  final double? low24h;      
+  final String baseCurrency; 
 
   const BitcoinPriceModel({
     required this.usd,
@@ -34,7 +34,7 @@ class BitcoinPriceModel {
     this.baseCurrency = 'USD',
   });
 
-  /// Factory constructor para criar uma instância a partir do JSON da API
+  
   factory BitcoinPriceModel.fromJson(Map<String, dynamic> json, {String baseCurrency = 'USD'}) {
     final bitcoinData = json['bitcoin'] as Map<String, dynamic>;
     
@@ -57,7 +57,7 @@ class BitcoinPriceModel {
     );
   }
 
-  /// Converte o modelo para JSON
+  
   Map<String, dynamic> toJson() {
     return {
       'bitcoin': {
@@ -78,7 +78,7 @@ class BitcoinPriceModel {
     };
   }
 
-  /// Retorna o preço na moeda base
+  
   double get baseCurrencyPrice {
     switch (baseCurrency.toLowerCase()) {
       case 'usd':
@@ -96,7 +96,7 @@ class BitcoinPriceModel {
     }
   }
 
-  /// Retorna a mudança percentual na moeda base
+  
   double get baseCurrencyChange {
     switch (baseCurrency.toLowerCase()) {
       case 'usd':
@@ -114,39 +114,39 @@ class BitcoinPriceModel {
     }
   }
 
-  /// Retorna o volume 24h na moeda base selecionada
+  
   double get baseCurrencyVolume24h {
     if (volume24h == null) return 0.0;
     
-    // Volume está sempre em USD, então convertemos para a moeda base
+    
     final volumeUSD = volume24h!;
     
     switch (baseCurrency.toLowerCase()) {
       case 'usd':
         return volumeUSD;
       case 'brl':
-        // Converte USD para BRL usando a taxa de câmbio atual
+        
         if (brl > 0 && usd > 0) {
           final usdToBrlRate = brl / usd;
           return volumeUSD * usdToBrlRate;
         }
         return volumeUSD;
       case 'eur':
-        // Converte USD para EUR usando a taxa de câmbio atual
+        
         if (eur != null && eur! > 0 && usd > 0) {
           final usdToEurRate = eur! / usd;
           return volumeUSD * usdToEurRate;
         }
         return volumeUSD;
       case 'gbp':
-        // Converte USD para GBP usando a taxa de câmbio atual
+        
         if (gbp != null && gbp! > 0 && usd > 0) {
           final usdToGbpRate = gbp! / usd;
           return volumeUSD * usdToGbpRate;
         }
         return volumeUSD;
       case 'jpy':
-        // Converte USD para JPY usando a taxa de câmbio atual
+        
         if (jpy != null && jpy! > 0 && usd > 0) {
           final usdToJpyRate = jpy! / usd;
           return volumeUSD * usdToJpyRate;
@@ -157,39 +157,39 @@ class BitcoinPriceModel {
     }
   }
 
-  /// Retorna o market cap na moeda base selecionada
+  
   double get baseCurrencyMarketCap {
     if (marketCap == null) return 0.0;
     
-    // Market Cap está sempre em USD, então convertemos para a moeda base
+    
     final marketCapUSD = marketCap!;
     
     switch (baseCurrency.toLowerCase()) {
       case 'usd':
         return marketCapUSD;
       case 'brl':
-        // Converte USD para BRL usando a taxa de câmbio atual
+        
         if (brl > 0 && usd > 0) {
           final usdToBrlRate = brl / usd;
           return marketCapUSD * usdToBrlRate;
         }
         return marketCapUSD;
       case 'eur':
-        // Converte USD para EUR usando a taxa de câmbio atual
+        
         if (eur != null && eur! > 0 && usd > 0) {
           final usdToEurRate = eur! / usd;
           return marketCapUSD * usdToEurRate;
         }
         return marketCapUSD;
       case 'gbp':
-        // Converte USD para GBP usando a taxa de câmbio atual
+        
         if (gbp != null && gbp! > 0 && usd > 0) {
           final usdToGbpRate = gbp! / usd;
           return marketCapUSD * usdToGbpRate;
         }
         return marketCapUSD;
       case 'jpy':
-        // Converte USD para JPY usando a taxa de câmbio atual
+        
         if (jpy != null && jpy! > 0 && usd > 0) {
           final usdToJpyRate = jpy! / usd;
           return marketCapUSD * usdToJpyRate;
@@ -200,39 +200,39 @@ class BitcoinPriceModel {
     }
   }
 
-  /// Retorna a máxima 24h na moeda base selecionada
+  
   double? get baseCurrencyHigh24h {
     if (high24h == null) return null;
     
-    // High24h está sempre em USD, então convertemos para a moeda base
+    
     final high24hUSD = high24h!;
     
     switch (baseCurrency.toLowerCase()) {
       case 'usd':
         return high24hUSD;
       case 'brl':
-        // Converte USD para BRL usando a taxa de câmbio atual
+        
         if (brl > 0 && usd > 0) {
           final usdToBrlRate = brl / usd;
           return high24hUSD * usdToBrlRate;
         }
         return high24hUSD;
       case 'eur':
-        // Converte USD para EUR usando a taxa de câmbio atual
+        
         if (eur != null && eur! > 0 && usd > 0) {
           final usdToEurRate = eur! / usd;
           return high24hUSD * usdToEurRate;
         }
         return high24hUSD;
       case 'gbp':
-        // Converte USD para GBP usando a taxa de câmbio atual
+        
         if (gbp != null && gbp! > 0 && usd > 0) {
           final usdToGbpRate = gbp! / usd;
           return high24hUSD * usdToGbpRate;
         }
         return high24hUSD;
       case 'jpy':
-        // Converte USD para JPY usando a taxa de câmbio atual
+        
         if (jpy != null && jpy! > 0 && usd > 0) {
           final usdToJpyRate = jpy! / usd;
           return high24hUSD * usdToJpyRate;
@@ -243,39 +243,39 @@ class BitcoinPriceModel {
     }
   }
 
-  /// Retorna a mínima 24h na moeda base selecionada
+  
   double? get baseCurrencyLow24h {
     if (low24h == null) return null;
     
-    // Low24h está sempre em USD, então convertemos para a moeda base
+    
     final low24hUSD = low24h!;
     
     switch (baseCurrency.toLowerCase()) {
       case 'usd':
         return low24hUSD;
       case 'brl':
-        // Converte USD para BRL usando a taxa de câmbio atual
+        
         if (brl > 0 && usd > 0) {
           final usdToBrlRate = brl / usd;
           return low24hUSD * usdToBrlRate;
         }
         return low24hUSD;
       case 'eur':
-        // Converte USD para EUR usando a taxa de câmbio atual
+        
         if (eur != null && eur! > 0 && usd > 0) {
           final usdToEurRate = eur! / usd;
           return low24hUSD * usdToEurRate;
         }
         return low24hUSD;
       case 'gbp':
-        // Converte USD para GBP usando a taxa de câmbio atual
+        
         if (gbp != null && gbp! > 0 && usd > 0) {
           final usdToGbpRate = gbp! / usd;
           return low24hUSD * usdToGbpRate;
         }
         return low24hUSD;
       case 'jpy':
-        // Converte USD para JPY usando a taxa de câmbio atual
+        
         if (jpy != null && jpy! > 0 && usd > 0) {
           final usdToJpyRate = jpy! / usd;
           return low24hUSD * usdToJpyRate;
@@ -286,10 +286,10 @@ class BitcoinPriceModel {
     }
   }
 
-  /// Indica se o preço está em alta (positivo) na moeda base
+  
   bool get isPositive => baseCurrencyChange > 0;
 
-  /// Indica se o preço está em baixa (negativo) na moeda base
+  
   bool get isNegative => baseCurrencyChange < 0;
 
   @override

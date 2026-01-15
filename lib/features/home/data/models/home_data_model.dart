@@ -1,6 +1,6 @@
 import '../../domain/entities/home_data.dart';
 
-/// Model que extende a entidade BitcoinData
+
 class BitcoinDataModel extends BitcoinData {
   const BitcoinDataModel({
     required super.currentPrice,
@@ -37,8 +37,8 @@ class BitcoinDataModel extends BitcoinData {
   }
 }
 
-/// Model que extende a entidade HomeData
-/// Responsável pela serialização/deserialização de dados
+
+
 class HomeDataModel extends HomeData {
   const HomeDataModel({
     required super.title,

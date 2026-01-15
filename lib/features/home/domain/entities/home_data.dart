@@ -1,6 +1,6 @@
 import '../../data/models/bitcoin_historical_data_model.dart';
 
-/// Entidade que representa informações do Bitcoin
+
 class BitcoinData {
   final double currentPrice;
   final double changeAmount;
@@ -15,7 +15,7 @@ class BitcoinData {
   final double change7d;
   final double change30d;
   final List<double> chartData;
-  final BitcoinHistoricalDataModel? historicalData; // Dados completos para tooltips
+  final BitcoinHistoricalDataModel? historicalData; 
 
   const BitcoinData({
     required this.currentPrice,
@@ -34,7 +34,7 @@ class BitcoinData {
     this.historicalData,
   });
 
-  /// Cria uma cópia com alguns campos opcionalmente substituídos
+  
   BitcoinData copyWith({
     double? currentPrice,
     double? changeAmount,
@@ -70,8 +70,8 @@ class BitcoinData {
   }
 }
 
-/// Entidade que representa informações básicas da tela Home
-/// Esta é uma classe pura do domínio, sem dependências externas
+
+
 class HomeData {
   final String title;
   final String subtitle;

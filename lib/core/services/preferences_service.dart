@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Serviço para gerenciar preferências do usuário
@@ -42,12 +43,12 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     final locale = _currencyToLocale(currency);
     
-    print('💾 PreferencesService: Salvando currency=$currency e locale=$locale');
+    debugPrint('💾 PreferencesService: Salvando currency=$currency e locale=$locale');
     
     await prefs.setString(_currencyKey, currency);
     await prefs.setString(_localeKey, locale);
     
-    print('✅ PreferencesService: Salvo com sucesso!');
+    debugPrint('✅ PreferencesService: Salvo com sucesso!');
   }
 
   /// Recupera a moeda selecionada (padrão: USD)
@@ -129,10 +130,10 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     if (value == null || value == 0.0) {
       await prefs.remove(_alertTargetBtcKey);
-      print('🔔 PreferencesService: Alerta de BTC removido');
+      debugPrint('🔔 PreferencesService: Alerta de BTC removido');
     } else {
       await prefs.setDouble(_alertTargetBtcKey, value);
-      print('🔔 PreferencesService: Alerta de BTC salvo: $value');
+      debugPrint('🔔 PreferencesService: Alerta de BTC salvo: $value');
     }
   }
 
@@ -147,10 +148,10 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     if (value == null || value == 0.0) {
       await prefs.remove(_alertTargetFiatKey);
-      print('🔔 PreferencesService: Alerta de Fiat removido');
+      debugPrint('🔔 PreferencesService: Alerta de Fiat removido');
     } else {
       await prefs.setDouble(_alertTargetFiatKey, value);
-      print('🔔 PreferencesService: Alerta de Fiat salvo: $value');
+      debugPrint('🔔 PreferencesService: Alerta de Fiat salvo: $value');
     }
   }
 
@@ -165,10 +166,10 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     if (value == null || value == 0.0) {
       await prefs.remove(_lastTriggeredAlertFiatKey);
-      print('🔔 PreferencesService: Último alerta disparado removido');
+      debugPrint('🔔 PreferencesService: Último alerta disparado removido');
     } else {
       await prefs.setDouble(_lastTriggeredAlertFiatKey, value);
-      print('🔔 PreferencesService: Último alerta disparado salvo: $value');
+      debugPrint('🔔 PreferencesService: Último alerta disparado salvo: $value');
     }
   }
 
@@ -183,10 +184,10 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     if (value == null || value == 0.0) {
       await prefs.remove(_savedAlertValueFiatKey);
-      print('🔔 PreferencesService: Valor salvo do campo removido');
+      debugPrint('🔔 PreferencesService: Valor salvo do campo removido');
     } else {
       await prefs.setDouble(_savedAlertValueFiatKey, value);
-      print('🔔 PreferencesService: Valor do campo salvo: $value');
+      debugPrint('🔔 PreferencesService: Valor do campo salvo: $value');
     }
   }
 
@@ -200,7 +201,7 @@ class PreferencesService {
   static Future<void> setSavedOscillationValue(double value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setDouble(_savedOscillationValueKey, value);
-    print('💾 PreferencesService: Valor de oscilação salvo: $value%');
+    debugPrint('💾 PreferencesService: Valor de oscilação salvo: $value%');
   }
 
   /// Recupera o valor salvo da oscilação (para restaurar o campo)
@@ -214,10 +215,10 @@ class PreferencesService {
     final prefs = await SharedPreferences.getInstance();
     if (value == 0.0) {
       await prefs.remove(_alertOscillationKey);
-      print('🔔 PreferencesService: Alerta de oscilação removido');
+      debugPrint('🔔 PreferencesService: Alerta de oscilação removido');
     } else {
       await prefs.setDouble(_alertOscillationKey, value);
-      print('🔔 PreferencesService: Alerta de oscilação salvo: $value%');
+      debugPrint('🔔 PreferencesService: Alerta de oscilação salvo: $value%');
     }
   }
 
@@ -231,7 +232,7 @@ class PreferencesService {
   static Future<void> setAlertPriceTrend(String trend) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_alertPriceTrendKey, trend);
-    print('🔔 PreferencesService: Tendência de preço salva: $trend');
+    debugPrint('🔔 PreferencesService: Tendência de preço salva: $trend');
   }
 
   /// Recupera a tendência do alerta de preço (null se não configurado)

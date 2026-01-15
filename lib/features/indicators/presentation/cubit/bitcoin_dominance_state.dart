@@ -1,19 +1,19 @@
-/// Estados possíveis para a dominância do Bitcoin
+
 abstract class BitcoinDominanceState {
   const BitcoinDominanceState();
 }
 
-/// Estado inicial
+
 class BitcoinDominanceInitial extends BitcoinDominanceState {
   const BitcoinDominanceInitial();
 }
 
-/// Estado de carregamento
+
 class BitcoinDominanceLoading extends BitcoinDominanceState {
   const BitcoinDominanceLoading();
 }
 
-/// Estado com dados carregados
+
 class BitcoinDominanceLoaded extends BitcoinDominanceState {
   final double dominance;
   final String status;
@@ -33,7 +33,7 @@ class BitcoinDominanceLoaded extends BitcoinDominanceState {
   }
 }
 
-/// Estado de erro
+
 class BitcoinDominanceError extends BitcoinDominanceState {
   final String message;
 

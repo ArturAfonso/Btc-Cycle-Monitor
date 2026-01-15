@@ -6,7 +6,7 @@ import '../../domain/entities/home_data.dart';
 import '../../../../core/preferences/preferences_cubit.dart';
 import '../../../../core/preferences/preferences_state.dart';
 
-/// Widget que exibe a análise de preço do Bitcoin
+
 class AppPreferences extends StatefulWidget {
   final BitcoinData bitcoinData;
 
@@ -17,14 +17,14 @@ class AppPreferences extends StatefulWidget {
 }
 
 class _AppPreferencesState extends State<AppPreferences> {
-  String selectedTab = 'Alertas'; // Variável para controlar qual aba está selecionada
-  String selectedPriceAlert = 'BTC'; // Variável para controlar qual alerta de preço está selecionado
-  String selectedCurrency = 'USD'; // Moeda selecionada
-  String selectedInterval = '30s'; // Intervalo de atualização
-  String selectedTheme = 'dark'; // Tema selecionado
-  bool startWithSystem = false; // Checkbox para iniciar com sistema
-  bool showNotifications = false; // Checkbox para exibir notificações
-  bool _isLoading = true; // Estado de carregamento
+  String selectedTab = 'Alertas'; 
+  String selectedPriceAlert = 'BTC'; 
+  String selectedCurrency = 'USD'; 
+  String selectedInterval = '30s'; 
+  String selectedTheme = 'dark'; 
+  bool startWithSystem = false; 
+  bool showNotifications = false; 
+  bool _isLoading = true; 
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _AppPreferencesState extends State<AppPreferences> {
     _loadPreferences();
   }
 
-  /// Carrega as preferências salvas
+  
   Future<void> _loadPreferences() async {
     try {
       final prefs = await PreferencesService.loadAllPreferences();
@@ -45,14 +45,14 @@ class _AppPreferencesState extends State<AppPreferences> {
         _isLoading = false;
       });
     } catch (e) {
-      print('Erro ao carregar preferências: $e');
+      debugPrint('Erro ao carregar preferências: $e');
       setState(() {
         _isLoading = false;
       });
     }
   }
 
-  /// Salva uma preferência específica
+  
   Future<void> _savePreference(String key, dynamic value) async {
     try {
       switch (key) {
@@ -73,7 +73,7 @@ class _AppPreferencesState extends State<AppPreferences> {
           break;
       }
     } catch (e) {
-      print('Erro ao salvar preferência $key: $e');
+      debugPrint('Erro ao salvar preferência $key: $e');
     }
   }
 
@@ -82,7 +82,7 @@ class _AppPreferencesState extends State<AppPreferences> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(AppColors.cardColor) /* const Color(0xFF1E293B) */,
+        color: const Color(AppColors.cardColor),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -93,12 +93,12 @@ class _AppPreferencesState extends State<AppPreferences> {
             style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
-          // Abas Resumo e Técnica
+          
           Container(
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(color: const Color(0xFF334155), borderRadius: BorderRadius.circular(16)),
 
-            //   color: Color(0xFF2A3139),
+            
             child: Row(
               children: [
                 Expanded(child: _buildTabButton('Alertas', selectedTab == 'Alertas')),
@@ -108,7 +108,7 @@ class _AppPreferencesState extends State<AppPreferences> {
             ),
           ),
           const SizedBox(height: 20),
-          // Conteúdo da análise
+          
       selectedTab == 'Alertas' ? _dataAlertsTabContent() : _dataSettingsbContent(),
         ],
       ),
@@ -146,7 +146,7 @@ class _AppPreferencesState extends State<AppPreferences> {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedTab = title; // Atualiza para a aba clicada
+          selectedTab = title; 
         });
       },
       child: Container(
@@ -191,7 +191,7 @@ class _AppPreferencesState extends State<AppPreferences> {
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(color: const Color(0xFF334155), borderRadius: BorderRadius.circular(16)),
 
-            //   color: Color(0xFF2A3139),
+            
             child: Row(
               children: [
                 Expanded(child: _buildPriceAlertButton('BTC', selectedPriceAlert == 'BTC')),
@@ -222,12 +222,12 @@ class _AppPreferencesState extends State<AppPreferences> {
             'Moeda Fiat padrão', 
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 10, /* vertical: 2 */),
+              padding: const EdgeInsets.symmetric(horizontal: 10,),
               decoration: BoxDecoration(
-                color: const Color(0xFF334155), // Cor de fundo escura
+                color: const Color(0xFF334155), 
                 borderRadius:BorderRadius.circular(16),
                 border: Border.all(
-                  color: const Color(0xFF475569), // Borda sutil
+                  color: const Color(0xFF475569), 
                   width: 1,
                 ),
               ),
@@ -253,7 +253,7 @@ class _AppPreferencesState extends State<AppPreferences> {
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
-                  dropdownColor: const Color(0xFF334155), // Cor do menu dropdown
+                  dropdownColor: const Color(0xFF334155), 
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
@@ -262,13 +262,13 @@ class _AppPreferencesState extends State<AppPreferences> {
           ),
           const SizedBox(height: 5),
           _buildAnalysisItem(
-            "", // Label em branco conforme solicitado
+            "", 
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Row(
                 children: [
-                  // Checkbox circular personalizado
+                  
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -302,7 +302,7 @@ class _AppPreferencesState extends State<AppPreferences> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // Texto clicável
+                  
                   Expanded(
                     child: InkWell(
                       onTap: () {
@@ -328,13 +328,13 @@ class _AppPreferencesState extends State<AppPreferences> {
           ),
           const SizedBox(height: 5),
           _buildAnalysisItem(
-            "", // Label em branco conforme solicitado
+            "", 
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
               child: Row(
                 children: [
-                  // Checkbox circular personalizado
+                  
                   InkWell(
                     onTap: () {
                       setState(() {
@@ -368,7 +368,7 @@ class _AppPreferencesState extends State<AppPreferences> {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // Texto clicável
+                  
                   Expanded(
                     child: InkWell(
                       onTap: () {

@@ -7,7 +7,7 @@ import '../../../../core/utils/number_formatter.dart';
 import '../../../../core/preferences/preferences_cubit.dart';
 import '../../../../core/preferences/preferences_state.dart';
 
-/// Widget que exibe as estatísticas do Bitcoin nas últimas 24h
+
 class BitcoinStats extends StatelessWidget {
   final BitcoinData bitcoinData;
 
@@ -20,7 +20,7 @@ class BitcoinStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PreferencesCubit, PreferencesState>(
       builder: (context, preferencesState) {
-        String selectedCurrency = 'USD'; // Default
+        String selectedCurrency = 'USD'; 
 
         
         if (preferencesState is PreferencesLoaded) {
@@ -52,10 +52,10 @@ class BitcoinStats extends StatelessWidget {
               _buildStatItem('Mínima', Utility().priceToCurrency(bitcoinData.minPrice24h, fiat: selectedCurrency), valueColor: Color(AppColors.errorColor)),
               const SizedBox(height: 5),
               _buildStatItem('Volume 24h', NumberFormatter.formatLargeNumber(bitcoinData.volume24h * 1e9, decimals: 1, fiat: selectedCurrency)),
-              //_buildStatItem('Volume 24h', Utility().priceToCurrency(bitcoinData.volume24h * 1e9, )),
+              
               const SizedBox(height: 5),
               _buildStatItem('Market Cap', NumberFormatter.formatLargeNumber(bitcoinData.marketCap * 1e12, decimals: 2, fiat: selectedCurrency)),
-             // _buildStatItem('Market Cap', Utility().priceToCurrency(bitcoinData.marketCap * 1e12,)),
+             
               const SizedBox(height: 5),
               _buildStatItem('Fornecimento Circ.', '${Utility().priceToCurrency(bitcoinData.circulatingSupply, fiat: selectedCurrency)}M BTC'),
               const SizedBox(height: 5),

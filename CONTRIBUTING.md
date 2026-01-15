@@ -1,8 +1,9 @@
-# Como Adicionar Novas Features
+# Guia de Arquitetura e Contribuição
+Gostaria de melhorar o aplicativo?
 
-## Estrutura para Nova Feature
+Este projeto foi desenvolvido seguindo os princípios de Clean Architecture e S.O.L.I.D., garantindo que o sistema seja testável, escalável e de fácil manutenção.
 
-Para adicionar uma nova feature (ex: `portfolio`), siga esta estrutura:
+Para manter a consistência da base de código e facilitar a escalabilidade por múltiplos desenvolvedores, todas as novas funcionalidades devem seguir a estrutura definida abaixo.
 
 ```
 lib/features/portfolio/

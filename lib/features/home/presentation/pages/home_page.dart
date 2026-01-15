@@ -12,7 +12,7 @@ import '../widgets/bitcoin_preferences.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../indicators/presentation/pages/indicators_page.dart';
 
-/// Página principal da feature Home
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
         elevation: 0,
         title: Row(
           children: [
-            // Área arrastável (logo + texto)
+            
             Expanded(
               child: DragToMoveArea(
                 child: Row(
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            // Botão Indicadores (não arrastável)
+            
             InkWell(
               onTap: () {
                 Navigator.of(context).push(
@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
               context.read<HomeCubit>().refreshData();
             },
           ),
-          // Botões de controle de janela customizados
+          
           IconButton(
             icon: const Icon(Icons.minimize, color: Color(AppColors.textPrimary), size: 20),
             tooltip: 'Minimizar',
@@ -163,31 +163,31 @@ class HomePage extends StatelessWidget {
                  
                   const SizedBox(height: 16),
                   
-                  // Conteúdo principal que ocupa o resto da tela
+                  
                   Expanded(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Gráfico ocupa 2/3 do espaço
+                        
                         Expanded(
                           flex: 2,
                           child: BitcoinChart(bitcoinData: bitcoinData),
                         ),
                         const SizedBox(width: 16),
                         
-                        // Coluna com Stats e Analysis ocupa 1/3 do espaço
+                        
                         Expanded(
                           flex: 1,
                           child: Column(
                             children: [
-                              // Stats ocupa espaço flexível
+                              
                               Expanded(
                                 flex: 1,
                                 child: BitcoinStats(bitcoinData: bitcoinData),
                               ),
                               const SizedBox(height: 16),
                               
-                              // Analysis ocupa espaço flexível
+                              
                               Expanded(
                                 flex: 2,
                                 child: AppPreferencesWithCubit(bitcoinData: bitcoinData),

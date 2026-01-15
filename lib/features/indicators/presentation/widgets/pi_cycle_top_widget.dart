@@ -2,14 +2,14 @@ import 'package:btc_cycle_monitor/core/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-/// Widget que exibe o indicador Pi Cycle Top
-/// 
-/// Mostra:
-/// - Status atual (Topo, Aproximando, Normal)
-/// - Gráfico visual mostrando proximidade das médias
-/// - Valores das médias móveis (SMA 111 e SMA 350 x 2)
-/// - Distância percentual entre as médias
-/// - Ícone/emoji indicando o estado
+
+
+
+
+
+
+
+
 class PiCycleTopWidget extends StatelessWidget {
   final double? sma111;
   final double? sma350x2;
@@ -74,7 +74,7 @@ class PiCycleTopWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Cabeçalho com status
+        
         Row(
           children: [
             Icon(
@@ -97,7 +97,7 @@ class PiCycleTopWidget extends StatelessWidget {
         ),
         const SizedBox(height: 6),
     
-        // Mensagem descritiva
+        
         Text(
           message,
           style: TextStyle(
@@ -111,20 +111,20 @@ class PiCycleTopWidget extends StatelessWidget {
           const Divider(height: 2),
           const SizedBox(height: 8),
     
-          // Gráfico visual de proximidade
+          
           _buildProximityChart(),
           const SizedBox(height: 5),
     
-          // Valores das médias móveis
+          
           _buildMetricRow(
             label: 'SMA 111',
-            value: Utility().priceToCurrency(sma111!),   //'\$${sma111!.toStringAsFixed(2)}',
+            value: Utility().priceToCurrency(sma111!),   
             color: Colors.blue.shade400,
           ),
           const SizedBox(height: 5),
           _buildMetricRow(
             label: 'SMA 350 x 2',
-            value: Utility().priceToCurrency(sma350x2!), //'\$${sma350x2!.toStringAsFixed(2)}',
+            value: Utility().priceToCurrency(sma350x2!), 
             color: Colors.purple.shade400,
           ),
     
@@ -138,7 +138,7 @@ class PiCycleTopWidget extends StatelessWidget {
           ],
         ],
     
-        // Rodapé informativo
+        
         const SizedBox(height: 8),
         const Divider(height: 1),
         const SizedBox(height: 4),
@@ -165,21 +165,21 @@ class PiCycleTopWidget extends StatelessWidget {
     );
   }
 
-  /// Constrói o gráfico visual de proximidade entre as médias
+  
   Widget _buildProximityChart() {
     if (sma111 == null || sma350x2 == null) {
       return const SizedBox.shrink();
     }
 
-    // Calcula a porcentagem do Pi Cycle Top
-    // Fórmula: (SMA 111 / SMA 350 x 2) × 100
-    // - 0%: SMA 111 muito abaixo (mercado frio)
-    // - 50%: SMA 111 na metade do caminho
-    // - 100%: SMA 111 cruzou SMA 350 x 2 (TOPO!)
-    // - >100%: SMA 111 muito acima (topo confirmado)
+    
+    
+    
+    
+    
+    
     final double percentage = (sma111! / sma350x2!) * 100;
     
-    print('🎨 [Pi Cycle] SMA 111: \$${sma111!.toStringAsFixed(2)}, SMA 350x2: \$${sma350x2!.toStringAsFixed(2)}, Percentage: ${percentage.toStringAsFixed(1)}%');
+    debugPrint('🎨 [Pi Cycle] SMA 111: \$${sma111!.toStringAsFixed(2)}, SMA 350x2: \$${sma350x2!.toStringAsFixed(2)}, Percentage: ${percentage.toStringAsFixed(1)}%');
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,10 +206,10 @@ class PiCycleTopWidget extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 2),
-        // Barra de progresso
+        
         Stack(
           children: [
-            // Container de fundo
+            
             Container(
               height: 24,
               decoration: BoxDecoration(
@@ -217,7 +217,7 @@ class PiCycleTopWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            // Barra de progresso preenchida
+            
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: SizedBox(
@@ -225,7 +225,7 @@ class PiCycleTopWidget extends StatelessWidget {
                 width: double.infinity,
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
-                  widthFactor: (percentage / 100).clamp(0.0, 1.0), // Limita a 100% visual
+                  widthFactor: (percentage / 100).clamp(0.0, 1.0), 
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -242,7 +242,7 @@ class PiCycleTopWidget extends StatelessWidget {
                 ),
               ),
             ),
-            // Marcadores de texto sobrepostos
+            
             Container(
               height: 24,
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -300,7 +300,7 @@ class PiCycleTopWidget extends StatelessWidget {
     );
   }
 
-  /// Retorna a cor do progresso baseado na porcentagem
+  
   Color _getProgressColor(double percentage) {
     if (percentage >= 90) {
       return Colors.red.shade400;

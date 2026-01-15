@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_constants.dart';
 
-/// Widget que exibe estado de carregamento
+
 class HomeLoading extends StatelessWidget {
   const HomeLoading({super.key});
 
