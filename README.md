@@ -244,7 +244,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 **Artur Afonso**
 
 - GitHub: [@ArturAfonso](https://github.com/ArturAfonso)
-- LinkedIn: [Artur Afonso](https://www.linkedin.com/in/arturafonso)
+- LinkedIn: [Artur Afonso](https://www.linkedin.com/in/artur-afonso-teobaldo/)
 
 ---
 
