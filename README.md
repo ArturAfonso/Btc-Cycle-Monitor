@@ -47,7 +47,7 @@ O **BTC Cycle Monitor** responde essas perguntas de forma visual e intuitiva!
 - Estatísticas 24h: máxima, mínima, volume, market cap, fornecimento circulante e dominância
 - Suporte a múltiplas moedas: **USD, BRL, EUR, GBP, JPY**
 
-![Dashboard Principal](docs/screenshots/dashboard.png)
+![Dashboard Principal](assets/dashboard.png)
 
 ---
 
@@ -71,7 +71,7 @@ Configure alertas personalizados e seja notificado automaticamente:
 
 **✅ Funcionam em segundo plano:** Mesmo com o app minimizado ou fechado!
 
-![Alertas](docs/screenshots/alerts.png)
+![Alertas](assets/alerts.png)
 
 ---
 
@@ -101,7 +101,7 @@ O app traz 3 indicadores essenciais para saber em que momento do ciclo estamos:
   - Baixa dominância (<40%) = Altseason, Bitcoin perdendo espaço
   - Proximidade do fim do ciclo indicada visualmente
 
-![Indicadores Técnicos](docs/screenshots/indicators.png)
+![Indicadores Técnicos](assets/indicators.png)
 
 ---
 
