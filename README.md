@@ -113,28 +113,6 @@ O app traz 3 indicadores essenciais para saber em que momento do ciclo estamos:
 - **Iniciar com o sistema:** Execute automaticamente ao ligar o PC
 - **Notificações:** Ative/desative conforme preferir
 
----
-
-## 🖼️ Capturas de Tela
-
-### 📊 Dashboard Principal
-Acompanhe o preço, gráfico e estatísticas do Bitcoin em tempo real.
-
-![Dashboard](docs/screenshots/dashboard.png)
-
----
-
-### 🔔 Alertas e Preferências
-Configure alertas de preço e oscilação, personalize moeda e notificações.
-
-![Alertas](docs/screenshots/alerts.png)
-
----
-
-### 📈 Indicadores de Ciclo
-Veja Fear & Greed, Pi Cycle Top e Dominância BTC para tomar decisões informadas.
-
-![Indicadores](docs/screenshots/indicators.png)
 
 ---
 
